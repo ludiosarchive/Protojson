@@ -73,3 +73,5 @@ except:
 -	Prefer to have lines <= 80 characters, but always less than 100.
 -	In docstrings, use epytext, but don't use @param, @type, etc.
 	Few people know how to maintain those annotations.
+
+If you add tests, make sure to update run_tests.py!
