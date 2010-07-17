@@ -135,29 +135,19 @@ class PbLiteSerializer(object):
 		else:
 			if not _isMessageOrGroup(field):
 				if field.type != TYPE_BOOL:
-					print repr(message), repr(file.name), repr(subdata)
+					##print repr(message), str(message), repr(file.name), repr(subdata)
 					setattr(message, field.name, subdata)
 				else:
 					setattr(message, field.name, subdata == 1)
 			else:
 				submessage = getattr(message, field.name)
-				#submessage._Modified()
 				self._deserializeMessage(submessage, subdata)
-				#for subfield in message.DESCRIPTOR.fields:
-					# With the public API, we can only create a child Message
-					# by doing message.child.field = value, or similar.  This is
-					# incredibly inconvenient, so create a Message with a private
-					# API. ???????????
-#					submessage = getattr(message, subfield.name)
-#					self._deserializeMessageField(submessage, subfield, subdata)
-
 
 
 	def _deserializeMessage(self, message, data):
-		#print repr(message), repr(data), "\n"
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
-			print repr(tag), repr(field)
 			subdata = data[tag]
+			##print "tag, field, subdata", repr(tag), repr(field), repr(subdata)
 			self._deserializeMessageField(message, field, subdata)
 
 

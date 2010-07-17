@@ -108,8 +108,7 @@ class PbLiteSerializeTests(TestCase):
 		message.optional_string = 'test'
 		message.optional_bytes = 'abcd'
 
-		# Yes, it's actually UpperCase in the .proto file.
-		message.OptionalGroup.a = 111
+		message.optionalgroup.a = 111
 
 		message.optional_nested_message.b = 112
 
@@ -162,4 +161,6 @@ class PbLiteSerializeTests(TestCase):
 
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		serializer.deserialize(messageDecoded, pblite)
+		##print "\n\n", message
+		##print "\n\n", messageDecoded
 		self.assertEqual(messageDecoded, message)
