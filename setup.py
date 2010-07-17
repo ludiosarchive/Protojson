@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# If you make changes to import setuptools here, please make sure
+# it still works without setuptools.
+
 from distutils.core import setup
 
 import protojson
