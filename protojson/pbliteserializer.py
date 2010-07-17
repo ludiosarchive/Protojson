@@ -38,7 +38,6 @@ large) will have many (empty) spots and thus, are inefficient.
 
 
 from google.protobuf.descriptor import FieldDescriptor
-from google.protobuf.message import Message
 
 TYPE_BOOL = FieldDescriptor.TYPE_BOOL
 TYPE_MESSAGE = FieldDescriptor.TYPE_MESSAGE
@@ -83,7 +82,6 @@ class PbLiteSerializer(object):
 			# Booleans are serialized in numeric form.
 			return value and 1 or 0
 		elif _isMessageOrGroup(field):
-			assert isinstance(value, Message), repr(value)
 			return self.serialize(value)
 		else:
 			return value
