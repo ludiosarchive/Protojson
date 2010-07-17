@@ -112,36 +112,56 @@ class PbLiteSerializer(object):
 
 
 	def _getIterator(self, obj):
+		"""
+		Returns C{obj.__iter__()} or raises a L{PbDecodeError}.
+		"""
 		try:
 			return obj.__iter__()
 		except (TypeError, AttributeError):
-			raise PbDecodeError("Expected a list but found a %r" % (type(obj),))
+			raise PbDecodeError("Expected an iterable object but " +
+				"found a %r" % (type(obj),))
 
 
-	def _deserializeMessageField(self, message, field, subdata):
+	def _deserializeMessageField(self, message, field, data):
+		"""
+		Mutate C{message} based on C{data} and C{field}.
+
+		C{message} is a L{google.protobuf.message.Message}.
+		C{field} is a L{google.protobuf.descriptor.FieldDescriptor}.
+		C{data} is a L{list}, L{int}, L{long}, L{float}, L{bool}, L{str},
+			or L{unicode}.
+		"""
 		if _isRepeated(field):
 			if not _isMessageOrGroup(field):
 				if field.type == TYPE_BOOL:
-					subdata = [_v == 1 for _v in subdata]
-				getattr(message, field.name).extend(subdata)
+					data = [_v == 1 for _v in data]
+				getattr(message, field.name).extend(data)
 			else:
-				iterator = self._getIterator(subdata)
-				for subsubdata in iterator:
+				iterator = self._getIterator(data)
+				for subdata in iterator:
 					submessage = getattr(message, field.name).add()
-					self._deserializeMessage(submessage, subsubdata)
+					self._deserializeMessage(submessage, subdata)
 		else:
 			if not _isMessageOrGroup(field):
 				if field.type == TYPE_BOOL:
-					subdata = (subdata == 1)
-				setattr(message, field.name, subdata)
+					data = (data == 1)
+				setattr(message, field.name, data)
 			else:
-				# See "Singular Fields",
+				# On "singular fields", we can just grab a child and set
+				# properties on it.  Setting a field on the child will cause
+				# the child's field to exist in the parent.  See:
 				# https://code.google.com/apis/protocolbuffers/docs/reference/python-generated.html#fields
 				submessage = getattr(message, field.name)
-				self._deserializeMessage(submessage, subdata)
+				self._deserializeMessage(submessage, data)
 
 
 	def _deserializeMessage(self, message, data):
+		"""
+		Mutate C{message} based on C{data}.
+
+		C{message} is a L{google.protobuf.message.Message}.
+		C{data} is a L{list}.
+		"""
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
 			subdata = data[tag]
 			self._deserializeMessageField(message, field, subdata)
