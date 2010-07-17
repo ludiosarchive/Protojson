@@ -11,6 +11,16 @@ compatible with Closure Library's goog.proto2.ObjectSerializer.
 See also protojson.pbliteserializer's docstring.
 
 
+Requirements
+==========
+
+-	Python 2.4+ (tested only with 2.7, though).
+
+-	Google's protobuf Python module:
+	https://code.google.com/p/protobuf/
+	(see python/ in their source tree)
+
+
 
 Q&A
 ===
@@ -38,6 +48,17 @@ not UTF-8, you may need to change the encoding= passed to simplejson.dumps:
 
 >>> simplejson.dumps(["\xff"], encoding='latin-1')
 '["\\u00ff"]'
+
+
+
+Likely bugs
+========
+
+Not everything in pbliteserializer is tested.  You may discover problems with:
+
+-	Protocol Buffers Extensions (completely untested).
+
+-	Groups and Messages nested in untested ways.
 
 
 
