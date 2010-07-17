@@ -52,6 +52,8 @@ message TestAllTypes {
 
 	// Nothing for #17
 	optional NestedMessage optional_nested_message = 18;
+	// Nothing for #19
+	// Nothing for #20
 	optional NestedEnum optional_nested_enum = 21;
 
 	// Repeated
