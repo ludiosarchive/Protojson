@@ -57,6 +57,7 @@ class PbDecodeError(Exception):
 	pass
 
 
+
 class PbLiteSerializer(object):
 	"""
 	A port of Closure Library's goog.proto2.PbLiteSerializer, but without
