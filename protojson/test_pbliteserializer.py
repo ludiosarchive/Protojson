@@ -159,3 +159,7 @@ class PbLiteSerializeTests(TestCase):
 		self.assertEqual(202, pblite[31][1])
 		self.assertEqual('foo', pblite[44][0])
 		self.assertEqual('bar', pblite[44][1])
+
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		serializer.deserialize(messageDecoded, pblite)
+		self.assertEqual(messageDecoded, message)

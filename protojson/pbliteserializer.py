@@ -54,6 +54,10 @@ def _isMessageOrGroup(field):
 	return field.type in (TYPE_MESSAGE, TYPE_GROUP)
 
 
+class PbDecodeError(Exception):
+	pass
+
+
 class PbLiteSerializer(object):
 	"""
 	A port of Closure Library's goog.proto2.PbLiteSerializer, but without
@@ -109,37 +113,59 @@ class PbLiteSerializer(object):
 		return serialized
 
 
-	# Call .add() somewhere
+	def _getIterator(self, obj):
+		try:
+			return obj.__iter__()
+		except (TypeError, AttributeError):
+			raise PbDecodeError("Expected a list but found a %r" % (type(obj),))
+
+
+	def _deserializeMessageField(self, message, field, subdata):
+		if _isRepeated(field):
+			if not _isMessageOrGroup(field):
+				if field.type != TYPE_BOOL:
+					getattr(message, field.name).extend(subdata)
+				else:
+					getattr(message, field.name).extend([v == 1 for v in subdata])
+			else:
+				iterator = self._getIterator(subdata)
+				for subsubdata in iterator:
+					submessage = getattr(message, field.name).add()
+					self._deserializeMessage(submessage, subsubdata)
+		else:
+			if not _isMessageOrGroup(field):
+				if field.type != TYPE_BOOL:
+					print repr(message), repr(file.name), repr(subdata)
+					setattr(message, field.name, subdata)
+				else:
+					setattr(message, field.name, subdata == 1)
+			else:
+				submessage = getattr(message, field.name)
+				#submessage._Modified()
+				self._deserializeMessage(submessage, subdata)
+				#for subfield in message.DESCRIPTOR.fields:
+					# With the public API, we can only create a child Message
+					# by doing message.child.field = value, or similar.  This is
+					# incredibly inconvenient, so create a Message with a private
+					# API. ???????????
+#					submessage = getattr(message, subfield.name)
+#					self._deserializeMessageField(submessage, subfield, subdata)
+
 
 
 	def _deserializeMessage(self, message, data):
+		#print repr(message), repr(data), "\n"
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
+			print repr(tag), repr(field)
 			subdata = data[tag]
-			if _isRepeated(field):
-				if not _isMessageOrGroup(field):
-					if field.type != TYPE_BOOL:
-						getattr(message, field.name).extend(subdata)
-					else:
-						getattr(message, field.name).extend([v == 1 for v in subdata])
-				else:
-					for subsubdata in subdata:
-						submessage = getattr(message, field.name).add()
-						1/0
-			else:
-				if not _isMessageOrGroup(field):
-					setattr(message, field.name, subdata)
-				else:
-					1/0
+			self._deserializeMessageField(message, field, subdata)
 
 
 	def deserialize(self, message, data):
 		"""
 		C{message} is a L{google.protobuf.message.Message}.  Existing
-			values will be cleared.
+			values will be cleared.  It will be mutated.
 		C{data} is a L{list}.  Unneeded values are ignored.
-
-		Returns C{message} with fields filled with values from C{data}.
 		"""
 		message.Clear()
 		self._deserializeMessage(message, data)
-		return message
