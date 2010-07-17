@@ -133,7 +133,6 @@ class PbLiteSerializer(object):
 			if not _isMessageOrGroup(field):
 				if field.type == TYPE_BOOL:
 					subdata = (subdata == 1)
-				##print repr(message), str(message), repr(subdata)
 				setattr(message, field.name, subdata)
 			else:
 				# See "Singular Fields",
@@ -145,7 +144,6 @@ class PbLiteSerializer(object):
 	def _deserializeMessage(self, message, data):
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
 			subdata = data[tag]
-			##print "tag, field, subdata", repr(tag), repr(field), repr(subdata)
 			self._deserializeMessageField(message, field, subdata)
 
 
