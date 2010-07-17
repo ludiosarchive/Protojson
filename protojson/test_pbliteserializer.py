@@ -12,4 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = '10.7.16'
+
+from unittest import TestCase
+from protojson import pbliteserializer
+
+
+class PbLiteSerializeTests(TestCase):
+	def test_nothing(self):
+		pass

@@ -37,10 +37,13 @@ large) will have many (empty) spots and thus, are inefficient.
 """
 
 
-from google.protobuf.descriptor.FieldDescriptor import \
-	TYPE_BOOL, TYPE_MESSAGE, TYPE_GROUP, LABEL_REPEATED
-
+from google.protobuf.descriptor import FieldDescriptor
 from google.protobuf.message import Message
+
+TYPE_BOOL = FieldDescriptor.TYPE_BOOL
+TYPE_MESSAGE = FieldDescriptor.TYPE_MESSAGE
+TYPE_GROUP = FieldDescriptor.TYPE_GROUP
+LABEL_REPEATED = FieldDescriptor.LABEL_REPEATED
 
 
 class PbLiteSerializer(object):
