@@ -46,6 +46,14 @@ TYPE_GROUP = FieldDescriptor.TYPE_GROUP
 LABEL_REPEATED = FieldDescriptor.LABEL_REPEATED
 
 
+def _isRepeated(field):
+	return field.label == LABEL_REPEATED
+
+
+def _isMessageOrGroup(field):
+	return field.type in (TYPE_MESSAGE, TYPE_GROUP)
+
+
 class PbLiteSerializer(object):
 	"""
 	A port of Closure Library's goog.proto2.PbLiteSerializer, but without
@@ -62,11 +70,16 @@ class PbLiteSerializer(object):
 
 
 	def getSerializedValue(self, field, value):
+		"""
+		Returns the serialized form of the given value for the given field
+		if the field is a Message or Group and returns the value unchanged
+		otherwise (except serialize BOOLs as ints).
+		"""
 		if field.type == TYPE_BOOL:
 			# Booleans are serialized in numeric form.
 			return value and 1 or 0
 
-		elif field.type in (TYPE_MESSAGE, TYPE_GROUP):
+		elif _isMessageOrGroup(field):
 			assert isinstance(value, Message)
 			return self.serialize(value)
 
@@ -85,7 +98,7 @@ class PbLiteSerializer(object):
 
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
 			value = getattr(message, field.name)
-			if field.label == LABEL_REPEATED:
+			if _isRepeated(field):
 				serializedChild = []
 				for child in getattr(message, field.name):
 					serializedChild.append(self.getSerializedValue(field, child))
@@ -94,3 +107,39 @@ class PbLiteSerializer(object):
 				serialized[tag] = self.getSerializedValue(field, value)
 
 		return serialized
+
+
+	# Call .add() somewhere
+
+
+	def _deserializeMessage(self, message, data):
+		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
+			subdata = data[tag]
+			if _isRepeated(field):
+				if not _isMessageOrGroup(field):
+					if field.type != TYPE_BOOL:
+						getattr(message, field.name).extend(subdata)
+					else:
+						getattr(message, field.name).extend([v == 1 for v in subdata])
+				else:
+					for subsubdata in subdata:
+						submessage = getattr(message, field.name).add()
+						1/0
+			else:
+				if not _isMessageOrGroup(field):
+					setattr(message, field.name, subdata)
+				else:
+					1/0
+
+
+	def deserialize(self, message, data):
+		"""
+		C{message} is a L{google.protobuf.message.Message}.  Existing
+			values will be cleared.
+		C{data} is a L{list}.  Unneeded values are ignored.
+
+		Returns C{message} with fields filled with values from C{data}.
+		"""
+		message.Clear()
+		self._deserializeMessage(message, data)
+		return message
