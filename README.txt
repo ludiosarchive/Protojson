@@ -14,7 +14,7 @@ See also protojson.pbliteserializer's docstring.
 Requirements
 ==========
 
--	Python 2.4+ (tested only with 2.7, though).
+-	Python 2.4+ (tested only with 2.6.5 and 2.7.0, though).
 
 -	Google's protobuf Python module:
 	https://code.google.com/p/protobuf/
@@ -38,7 +38,7 @@ Why is this called "Protojson"? I don't see any JSON.
 You're right, pbliteserializer doesn't do any actual JSON encoding/decoding.
 This matches the behavior of the JavaScript version.  You'll need
 `simplejson` (or the built-in `json` module) to send and receive
-PbLite Arrays over the wire.
+PbLite lists over the wire.
 
 Note: if you want to send protobuf `bytes` to a client where bytes are
 not UTF-8, you may need to change the encoding= passed to simplejson.dumps:
@@ -54,7 +54,8 @@ not UTF-8, you may need to change the encoding= passed to simplejson.dumps:
 Likely bugs
 ========
 
-Not everything in pbliteserializer is tested.  You may discover problems with:
+Not everything in pbliteserializer is tested.  You might discover problems
+with:
 
 -	Protocol Buffers Extensions (completely untested).
 
