@@ -106,7 +106,9 @@ class PbLiteSerializeTests(TestCase):
 		message.optional_string = 'test'
 		message.optional_bytes = 'abcd'
 
+		# Yes, it's actually UpperCase in the .proto file.
 		message.OptionalGroup.a = 111
+
 		message.optional_nested_message.b = 112
 
 		message.optional_nested_enum  = alltypes_pb2.TestAllTypes.FOO
