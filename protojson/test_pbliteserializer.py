@@ -108,6 +108,7 @@ class PbLiteSerializeTests(TestCase):
 		message.optional_string = 'test'
 		message.optional_bytes = 'abcd'
 
+		# Note: setting OptionGroup.a is wrong and leads to disaster.
 		message.optionalgroup.a = 111
 
 		message.optional_nested_message.b = 112
