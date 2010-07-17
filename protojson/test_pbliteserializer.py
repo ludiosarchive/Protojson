@@ -14,9 +14,67 @@
 
 
 from unittest import TestCase
-from protojson import pbliteserializer
+from protojson import pbliteserializer, alltypes_pb2
 
 
 class PbLiteSerializeTests(TestCase):
-	def test_nothing(self):
-		pass
+	"""
+	Tests for L{pbliteserializer.PbLiteSerializer.serialize}.
+	"""
+	def test_defaults(self):
+		tat = alltypes_pb2.TestAllTypes()
+		serializer = pbliteserializer.PbLiteSerializer()
+		ser = serializer.serialize(tat)
+
+		self.assertEqual([
+			None, # 0
+			0, # 1
+			1, # 2
+			0, # and so on
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			1.5,
+			0,
+			0,
+			u'',
+			'moo',
+			[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 0], # 16
+			None, # 17
+			[None, 0],
+			None,
+			None,
+			1,
+			None,
+			None,
+			None,
+			None,
+			None,
+			None,
+			None,
+			None,
+			None,
+			[], # 31
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[], # 46
+			None, # 47
+			[], # 48
+			[], # 49
+		], ser)

@@ -74,16 +74,16 @@ class PbLiteSerializer(object):
 			return value
 
 
-	def serialize(message):
+	def serialize(self, message):
 		"""
 		C{message} is a L{google.protobuf.message.Message}.
 
 		Returns a C{list}, the serialized form of C{message}.
 		"""
 		maxFieldNumber = max([f.number for f in message.DESCRIPTOR.fields])
-		serialized = [self.fillerValue] * maxFieldNumber
+		serialized = [self.fillerValue] * (maxFieldNumber + 1)
 
-		for tag, field in message.DESCRIPTOR.fields_by_number:
+		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
 			value = getattr(message, field.name)
 			if field.label == LABEL_REPEATED:
 				serializedChild = []

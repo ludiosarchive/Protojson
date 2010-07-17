@@ -45,11 +45,14 @@ message TestAllTypes {
 	optional bytes optional_bytes = 15 [default = "moo"];
 
 	optional group OptionalGroup = 16 {
+		// Nothing for #0 - #16. pbliteserializer will have a lot
+		// of Nones.
 		optional int32 a = 17;
 	}
 
+	// Nothing for #17
 	optional NestedMessage optional_nested_message = 18;
-	optional NestedEnum optional_nested_enum  = 21;
+	optional NestedEnum optional_nested_enum = 21;
 
 	// Repeated
 	repeated int32 repeated_int32 = 31;
@@ -71,6 +74,8 @@ message TestAllTypes {
 	repeated group RepeatedGroup = 46 {
 		repeated int32 a = 47;
 	}
+
+	// Nothing for #47
 
 	repeated NestedMessage repeated_nested_message = 48;
 	repeated NestedEnum repeated_nested_enum = 49;
