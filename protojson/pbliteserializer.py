@@ -123,10 +123,9 @@ class PbLiteSerializer(object):
 	def _deserializeMessageField(self, message, field, subdata):
 		if _isRepeated(field):
 			if not _isMessageOrGroup(field):
-				if field.type != TYPE_BOOL:
-					getattr(message, field.name).extend(subdata)
-				else:
-					getattr(message, field.name).extend([v == 1 for v in subdata])
+				if field.type == TYPE_BOOL:
+					subdata = [_v == 1 for _v in subdata]
+				getattr(message, field.name).extend(subdata)
 			else:
 				iterator = self._getIterator(subdata)
 				for subsubdata in iterator:
@@ -134,11 +133,10 @@ class PbLiteSerializer(object):
 					self._deserializeMessage(submessage, subsubdata)
 		else:
 			if not _isMessageOrGroup(field):
-				if field.type != TYPE_BOOL:
-					##print repr(message), str(message), repr(subdata)
-					setattr(message, field.name, subdata)
-				else:
-					setattr(message, field.name, subdata == 1)
+				if field.type == TYPE_BOOL:
+					subdata = (subdata == 1)
+				##print repr(message), str(message), repr(subdata)
+				setattr(message, field.name, subdata)
 			else:
 				# See "Singular Fields",
 				# https://code.google.com/apis/protocolbuffers/docs/reference/python-generated.html#fields
@@ -155,8 +153,10 @@ class PbLiteSerializer(object):
 
 	def deserialize(self, message, data):
 		"""
-		C{message} is a L{google.protobuf.message.Message}.  It will be
-			mutated, not returned.  Existing values will be cleared.
+		Put values from C{data} into message C{message}.  The message
+		is mutated, not returned.  Existing values will be cleared.
+
+		C{message} is a L{google.protobuf.message.Message}.
 		C{data} is a L{list}.  Unneeded values are ignored.
 		"""
 		message.Clear()
