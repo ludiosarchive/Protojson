@@ -44,7 +44,9 @@ class PbLiteSerializeTests(TestCase):
 			0,
 			u'',
 			'moo',
-			[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 0], # 16
+			[ # 16
+				None, None, None, None, None, None, None, None, None,
+				None, None, None, None, None, None, None, None, 0],
 			None, # 17
 			[None, 0],
 			None,
