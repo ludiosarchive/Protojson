@@ -24,7 +24,7 @@ import protojson
 setup(
 	name='protojson',
 	version=protojson.__version__,
-	description="Converts google.protobuf.message.Message <-> JSON, " +
-		"where JSON is a format supported by Closure Library's goog.proto2",
+	description="Convert any google.protobuf.message.Message to and from " +
+		"a format supported by Closure Library's goog.proto2",
 	packages=['protojson'],
 )
