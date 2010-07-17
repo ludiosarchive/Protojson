@@ -1,0 +1,6 @@
+# This is a list of contributors to Protojson.
+
+# Names should be added to this file like so:
+# Name or Organization <email address>
+
+Ivan Kozik <ivan@ludios.org>

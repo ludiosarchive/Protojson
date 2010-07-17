@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = '10.7.16'
+__version__ = '10.7.17'

@@ -1,1 +1,1 @@
-python -W all -m unittest discover
+python -W all protojson/run_tests.py
