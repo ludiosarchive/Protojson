@@ -82,11 +82,9 @@ class PbLiteSerializer(object):
 		if field.type == TYPE_BOOL:
 			# Booleans are serialized in numeric form.
 			return value and 1 or 0
-
 		elif _isMessageOrGroup(field):
-			assert isinstance(value, Message)
+			assert isinstance(value, Message), repr(value)
 			return self.serialize(value)
-
 		else:
 			return value
 
