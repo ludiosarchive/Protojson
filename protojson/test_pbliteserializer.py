@@ -173,6 +173,22 @@ class PbLiteSerializeTests(TestCase):
 		self.assertEqual(messageDecoded, message)
 
 
+	def test_deserializeSerializeRepeatedMessage(self):
+		"""
+		Deserializing a repeated Message works.  When serialized, it
+		matches the original serialized data.
+		"""
+		serializer = pbliteserializer.PbLiteSerializer()
+		pblite = _getExpectedDefaults()
+		# Set the repeated_nested_message
+		pblite[48] = [[None, 100], [None, 200]]
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		serializer.deserialize(messageDecoded, pblite)
+
+		pbliteReencoded = serializer.serialize(messageDecoded)
+		self.assertEqual([[None, 100], [None, 200]], pbliteReencoded[48])
+
+
 	def test_wrongTypeForData(self):
 		"""
 		If a non-indexable object is passed as the second argument to
