@@ -135,20 +135,18 @@ class PbLiteSerializer(object):
 		"""
 		isBool = (field.type == TYPE_BOOL)
 		if _isRepeated(field):
+			messageField = getattr(message, field.name)
 			if not _isMessageOrGroup(field):
-				iterator = _getIterator(data)
-				for value in iterator:
+				for value in _getIterator(data):
 					if isBool:
 						value = _convertToBool(value)
 					try:
-						getattr(message, field.name).append(value)
+						messageField.append(value)
 					except TypeError, e:
 						raise PbDecodeError(str(e))
 			else:
-				iterator = _getIterator(data)
-				for subdata in iterator:
-					submessage = getattr(message, field.name).add()
-					self._deserializeMessage(submessage, subdata)
+				for subdata in _getIterator(data):
+					self._deserializeMessage(messageField.add(), subdata)
 		else:
 			if not _isMessageOrGroup(field):
 				if isBool:
@@ -162,8 +160,8 @@ class PbLiteSerializer(object):
 				# properties on it.  Setting a field on the child will cause
 				# the child's field to exist in the parent.  See:
 				# https://code.google.com/apis/protocolbuffers/docs/reference/python-generated.html#fields
-				submessage = getattr(message, field.name)
-				self._deserializeMessage(submessage, data)
+				messageField = getattr(message, field.name)
+				self._deserializeMessage(messageField, data)
 
 
 	def _deserializeMessage(self, message, data):
