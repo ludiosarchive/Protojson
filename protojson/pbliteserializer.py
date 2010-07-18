@@ -60,7 +60,7 @@ class PbDecodeError(Exception):
 
 def _convertToBool(obj):
 	if obj not in (0, 1):
-		raise PbDecodeError("Expected a value == " +
+		raise PbDecodeError("Expected a value == "
 			"to 0 or 1, but found a %r" % (type(obj),))
 	return (obj == 1)
 
@@ -72,7 +72,7 @@ def _getIterator(obj):
 	try:
 		return obj.__iter__()
 	except (TypeError, AttributeError):
-		raise PbDecodeError("Expected an iterable object but " +
+		raise PbDecodeError("Expected an iterable object but "
 			"found a %r" % (type(obj),))
 
 
@@ -178,7 +178,11 @@ class PbLiteSerializer(object):
 		C{data} is a L{list}.
 		"""
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
-			subdata = data[tag]
+			try:
+				subdata = data[tag]
+			except IndexError:
+				raise PbDecodeError("For message %r expected index "
+					"%r but it was missing." % (message, tag))
 			self._deserializeMessageField(message, field, subdata)
 
 

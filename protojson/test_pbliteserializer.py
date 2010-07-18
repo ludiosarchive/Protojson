@@ -204,19 +204,22 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 	Test that caller gets a L{PbDecodeError} if the pblite list has
 	objects of the wrong type.
 	"""
+	def setUp(self):
+		self.serializer = pbliteserializer.PbLiteSerializer()
+
+
 	def test_stringInsteadOfNumber(self):
 		"""
 		If an index which should contain an int64 field contains a string,
 		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
-		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = _getExpectedDefaults()
 		# Set the optional_int64 to a string
 		pblite[2] = u'wrong-type'
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
-			lambda: serializer.deserialize(messageDecoded, pblite))
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
 	def test_stringInRepeatedNumber(self):
@@ -224,14 +227,13 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		If an index which should contain a list of int64s contains a list of strings,
 		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
-		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = _getExpectedDefaults()
 		# Set the repeated_int32
 		pblite[31] = [4, u'wrong-type', 5]
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
-			lambda: serializer.deserialize(messageDecoded, pblite))
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
 	def test_noneInsteadOfRepeatedNumber(self):
@@ -239,14 +241,13 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		If an index which should contain a list of int64s contains a None,
 		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
-		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = _getExpectedDefaults()
 		# Set the repeated_int32
 		pblite[31] = None
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
-			lambda: serializer.deserialize(messageDecoded, pblite))
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
 	def test_noneInsteadOfRepeatedMessage(self):
@@ -255,14 +256,13 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		contains a None, L{PbLiteSerializer.deserialize} raises
 		L{PbDecodeError}.
 		"""
-		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = _getExpectedDefaults()
 		# Set the repeated_nested_message
 		pblite[48] = None
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
-			lambda: serializer.deserialize(messageDecoded, pblite))
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
 	def test_stringInsteadOfBool(self):
@@ -270,14 +270,13 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		If an index which should contain a bool (or bool number) contains
 		a string, L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
-		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = _getExpectedDefaults()
 		# Set the optional_bool
 		pblite[13] = u'wrong-type'
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
-			lambda: serializer.deserialize(messageDecoded, pblite))
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
 	def test_stringInRepeatedBool(self):
@@ -285,11 +284,23 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		If an index which should contain a list of bools (or bool numbers)
 		contains a string, L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
-		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = _getExpectedDefaults()
 		# Set the repeated_bool
 		pblite[43] = [1, u'wrong-type', 0]
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
-			lambda: serializer.deserialize(messageDecoded, pblite))
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
+	def test_messageMissingAnIndex(self):
+		"""
+		If the serialized data is missing an index which it should have,
+		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
+		"""
+		pblite = _getExpectedDefaults()
+		pblite.pop()
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertRaises(
+			pbliteserializer.PbDecodeError,
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
