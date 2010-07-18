@@ -87,7 +87,7 @@ class PbLiteSerializer(object):
 		self.fillerValue = fillerValue
 
 
-	def getSerializedValue(self, field, value):
+	def _getSerializedValue(self, field, value):
 		"""
 		Returns the serialized form of the given value for the given field
 		if the field is a Message or Group and returns the value unchanged
@@ -116,10 +116,10 @@ class PbLiteSerializer(object):
 			if _isRepeated(field):
 				serializedChild = []
 				for child in getattr(message, field.name):
-					serializedChild.append(self.getSerializedValue(field, child))
+					serializedChild.append(self._getSerializedValue(field, child))
 				serialized[tag] = serializedChild
 			else:
-				serialized[tag] = self.getSerializedValue(field, value)
+				serialized[tag] = self._getSerializedValue(field, value)
 
 		return serialized
 
