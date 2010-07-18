@@ -126,7 +126,7 @@ class PbLiteSerializer(object):
 
 	def _deserializeMessageField(self, message, field, data):
 		"""
-		Mutate C{message} based on C{data} and C{field}.
+		Mutates C{message} based on C{data} and C{field}.
 
 		C{message} is a L{google.protobuf.message.Message}.
 		C{field} is a L{google.protobuf.descriptor.FieldDescriptor}.
@@ -168,7 +168,7 @@ class PbLiteSerializer(object):
 
 	def _deserializeMessage(self, message, data):
 		"""
-		Mutate C{message} based on C{data}.
+		Mutates C{message} based on C{data}.
 
 		C{message} is a L{google.protobuf.message.Message}.
 		C{data} is a L{list}.
@@ -184,16 +184,17 @@ class PbLiteSerializer(object):
 
 	def deserialize(self, message, data):
 		"""
-		Put values from C{data} into message C{message}.  The message
-		is mutated, not returned.  Existing values will be cleared.
+		Puts values from C{data} into message C{message}.  The message
+		is mutated, not returned.  Existing values are cleared.
 
-		If C{data} is invalid, raises L{PbDecodeError}.
+		C{message} is a L{google.protobuf.message.Message}.
+		C{data} is a L{list}.  Unneeded values are ignored (fillerValue
+			is not used).
+
+		If any part of C{data} is invalid, raises L{PbDecodeError}.
 
 		Note that the deserializer is forgiving when it comes to bool fields -
 		it will accept 1, 1.0, True, 0, -0, 0.0, -0.0, and False.
-
-		C{message} is a L{google.protobuf.message.Message}.
-		C{data} is a L{list}.  Unneeded values are ignored.
 		"""
 		message.Clear()
 		self._deserializeMessage(message, data)
