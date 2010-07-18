@@ -58,6 +58,24 @@ class PbDecodeError(Exception):
 
 
 
+def _convertToBool(obj):
+	if obj not in (0, 1):
+		raise PbDecodeError("Expected a value == " +
+			"to 0 or 1, but found a %r" % (type(obj),))
+	return (obj == 1)
+
+
+def _getIterator(obj):
+	"""
+	Returns C{obj.__iter__()} or raises a L{PbDecodeError}.
+	"""
+	try:
+		return obj.__iter__()
+	except (TypeError, AttributeError):
+		raise PbDecodeError("Expected an iterable object but " +
+			"found a %r" % (type(obj),))
+
+
 class PbLiteSerializer(object):
 	"""
 	A port of Closure Library's goog.proto2.PbLiteSerializer, but without
@@ -110,17 +128,6 @@ class PbLiteSerializer(object):
 		return serialized
 
 
-	def _getIterator(self, obj):
-		"""
-		Returns C{obj.__iter__()} or raises a L{PbDecodeError}.
-		"""
-		try:
-			return obj.__iter__()
-		except (TypeError, AttributeError):
-			raise PbDecodeError("Expected an iterable object but " +
-				"found a %r" % (type(obj),))
-
-
 	def _deserializeMessageField(self, message, field, data):
 		"""
 		Mutate C{message} based on C{data} and C{field}.
@@ -130,21 +137,30 @@ class PbLiteSerializer(object):
 		C{data} is a L{list}, L{int}, L{long}, L{float}, L{bool}, L{str},
 			or L{unicode}.
 		"""
+		isBool = (field.type == TYPE_BOOL)
 		if _isRepeated(field):
 			if not _isMessageOrGroup(field):
-				if field.type == TYPE_BOOL:
-					data = [_v == 1 for _v in data]
-				getattr(message, field.name).extend(data)
+				iterator = _getIterator(data)
+				for value in iterator:
+					if isBool:
+						value = _convertToBool(value)
+					try:
+						getattr(message, field.name).append(value)
+					except TypeError, e:
+						raise PbDecodeError(str(e))
 			else:
-				iterator = self._getIterator(data)
+				iterator = _getIterator(data)
 				for subdata in iterator:
 					submessage = getattr(message, field.name).add()
 					self._deserializeMessage(submessage, subdata)
 		else:
 			if not _isMessageOrGroup(field):
-				if field.type == TYPE_BOOL:
-					data = (data == 1)
-				setattr(message, field.name, data)
+				if isBool:
+					data = _convertToBool(data)
+				try:
+					setattr(message, field.name, data)
+				except TypeError, e:
+					raise PbDecodeError(str(e))
 			else:
 				# On "singular fields", we can just grab a child and set
 				# properties on it.  Setting a field on the child will cause
@@ -170,6 +186,11 @@ class PbLiteSerializer(object):
 		"""
 		Put values from C{data} into message C{message}.  The message
 		is mutated, not returned.  Existing values will be cleared.
+
+		If C{data} is invalid, raises L{PbDecodeError}.
+
+		Note that the deserializer is forgiving when it comes to bool fields -
+		it will accept 1, 1.0, True, 0, -0, 0.0, -0.0, and False.
 
 		C{message} is a L{google.protobuf.message.Message}.
 		C{data} is a L{list}.  Unneeded values are ignored.
