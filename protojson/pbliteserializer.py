@@ -108,7 +108,7 @@ class PbLiteSerializer(object):
 
 		Returns a C{list}, the serialized form of C{message}.
 		"""
-		maxFieldNumber = max([f.number for f in message.DESCRIPTOR.fields])
+		maxFieldNumber = max(message.DESCRIPTOR.fields_by_number.keys())
 		serialized = [self.fillerValue] * (maxFieldNumber + 1)
 
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
