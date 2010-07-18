@@ -36,6 +36,7 @@ populated messages with tag numbers that are not continuous (and/or are very
 large) will have many (empty) spots and thus, are inefficient.
 """
 
+from protojson.error import PbDecodeError
 
 from google.protobuf.descriptor import FieldDescriptor
 
@@ -51,11 +52,6 @@ def _isRepeated(field):
 
 def _isMessageOrGroup(field):
 	return field.type in (TYPE_MESSAGE, TYPE_GROUP)
-
-
-class PbDecodeError(Exception):
-	pass
-
 
 
 def _convertToBool(obj):
