@@ -131,7 +131,7 @@ class PbLiteSerializer(object):
 		C{message} is a L{google.protobuf.message.Message}.
 		C{field} is a L{google.protobuf.descriptor.FieldDescriptor}.
 		C{data} is a L{list}, L{int}, L{long}, L{float}, L{bool}, L{str},
-			or L{unicode}.
+			L{unicode}, or L{NoneType}.
 		"""
 		isBool = (field.type == TYPE_BOOL)
 		if _isRepeated(field):
