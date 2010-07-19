@@ -46,13 +46,7 @@ TYPE_GROUP = FieldDescriptor.TYPE_GROUP
 TYPE_ENUM = FieldDescriptor.TYPE_ENUM
 LABEL_REPEATED = FieldDescriptor.LABEL_REPEATED
 
-
-def _isRepeated(field):
-	return field.label == LABEL_REPEATED
-
-
-def _isMessageOrGroup(field):
-	return field.type in (TYPE_MESSAGE, TYPE_GROUP)
+MESSAGE_OR_GROUP = (TYPE_MESSAGE, TYPE_GROUP)
 
 
 def _convertToBool(obj):
@@ -108,7 +102,7 @@ class PbLiteSerializer(object):
 		if field.type == TYPE_BOOL:
 			# Booleans are serialized in numeric form.
 			return value and 1 or 0
-		elif _isMessageOrGroup(field):
+		elif field.type in MESSAGE_OR_GROUP:
 			return self.serialize(value)
 		else:
 			return value
@@ -125,7 +119,7 @@ class PbLiteSerializer(object):
 
 		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
 			value = getattr(message, field.name)
-			if _isRepeated(field):
+			if field.label == LABEL_REPEATED:
 				serializedChild = []
 				for child in getattr(message, field.name):
 					serializedChild.append(self._getSerializedValue(field, child))
@@ -147,9 +141,9 @@ class PbLiteSerializer(object):
 		"""
 		isBool = (field.type == TYPE_BOOL)
 		isEnum = (field.type == TYPE_ENUM)
-		if _isRepeated(field):
+		if field.label == LABEL_REPEATED:
 			messageField = getattr(message, field.name)
-			if not _isMessageOrGroup(field):
+			if field.type not in MESSAGE_OR_GROUP:
 				for value in _getIterator(data):
 					if isBool:
 						value = _convertToBool(value)
@@ -163,7 +157,7 @@ class PbLiteSerializer(object):
 				for subdata in _getIterator(data):
 					self._deserializeMessage(messageField.add(), subdata)
 		else:
-			if not _isMessageOrGroup(field):
+			if field.type not in MESSAGE_OR_GROUP:
 				if isBool:
 					data = _convertToBool(data)
 				elif isEnum:
