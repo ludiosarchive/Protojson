@@ -238,6 +238,20 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
+	def test_numberTooBig(self):
+		"""
+		If an index which should contain an int64 field contains a big number
+		2**128, L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
+		"""
+		pblite = _getExpectedDefaults()
+		# Set the optional_int64 to a big number
+		pblite[2] = 2**128
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertRaises(
+			pbliteserializer.PbDecodeError,
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
 	def test_stringInRepeatedNumber(self):
 		"""
 		If an index which should contain a list of int64s contains a list of strings,
@@ -320,3 +334,8 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
 			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
+# TODO: test that extra fields in [] message are okay
+# TODO: test that having `None` for a required field raises PbDecodeError
+# TODO: test that bad enum value raises PbDecodeError (this one may be a lot of work)

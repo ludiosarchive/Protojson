@@ -142,7 +142,7 @@ class PbLiteSerializer(object):
 						value = _convertToBool(value)
 					try:
 						messageField.append(value)
-					except TypeError, e:
+					except (TypeError, ValueError), e:
 						raise PbDecodeError(str(e))
 			else:
 				for subdata in _getIterator(data):
@@ -153,7 +153,7 @@ class PbLiteSerializer(object):
 					data = _convertToBool(data)
 				try:
 					setattr(message, field.name, data)
-				except TypeError, e:
+				except (TypeError, ValueError), e:
 					raise PbDecodeError(str(e))
 			else:
 				# On "singular fields", we can just grab a child and set
