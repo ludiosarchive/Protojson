@@ -81,4 +81,8 @@ message TestAllTypes {
 
 	repeated NestedMessage repeated_nested_message = 48;
 	repeated NestedEnum repeated_nested_enum = 49;
+
+	// Our own additions follow.
+
+	required int32 required_int32 = 50 [default = 1];
 }

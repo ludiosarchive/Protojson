@@ -175,6 +175,7 @@ class PbLiteSerializer(object):
 			try:
 				subdata = data[tag]
 			except IndexError:
+				# Raise even if it was an optional field.
 				raise PbDecodeError("For message %r expected index "
 					"%r but it was missing." % (message, tag))
 			self._deserializeMessageField(message, field, subdata)
@@ -196,3 +197,5 @@ class PbLiteSerializer(object):
 		"""
 		message.Clear()
 		self._deserializeMessage(message, data)
+		# We know it's initialized (has every field) because we iterated
+		# over the fields, not the serialized data.

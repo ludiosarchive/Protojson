@@ -72,6 +72,7 @@ def _getExpectedDefaults():
 		None, # 47
 		[], # 48
 		[], # 49
+		1, # 50
 	]
 	return expectedDefaults
 
@@ -130,6 +131,8 @@ class PbLiteSerializeTests(TestCase):
 		message.repeated_string.append('foo')
 		message.repeated_string.append('bar')
 
+		message.required_int32 = 1
+
 		# Serialize.
 		serializer = pbliteserializer.PbLiteSerializer()
 		pblite = serializer.serialize(message)
@@ -165,12 +168,17 @@ class PbLiteSerializeTests(TestCase):
 		self.assertEqual(202, pblite[31][1])
 		self.assertEqual('foo', pblite[44][0])
 		self.assertEqual('bar', pblite[44][1])
+		self.assertEqual(1, pblite[50])
 
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		serializer.deserialize(messageDecoded, pblite)
 		##print "\n\n", message
 		##print "\n\n", messageDecoded
-		self.assertEqual(messageDecoded, message)
+		self.assertEqual(
+			messageDecoded,
+			message,
+			"Messages do not match:\n" +
+			str(messageDecoded) + "\n!=\n\n" + str(message))
 
 
 	def test_deserializeSerializeRepeatedMessage(self):
@@ -217,8 +225,7 @@ class PbLiteSerializeTests(TestCase):
 
 class PbLiteDeserializeWrongObjectTests(TestCase):
 	"""
-	Test that caller gets a L{PbDecodeError} if the pblite list has
-	objects of the wrong type.
+	Test what happens if the serialized message is corrupt or unusual.
 	"""
 	def setUp(self):
 		self.serializer = pbliteserializer.PbLiteSerializer()
@@ -325,7 +332,7 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 
 	def test_messageMissingAnIndex(self):
 		"""
-		If the serialized data is missing an index which it should have,
+		If a serialized message is missing an index which it should have,
 		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
 		pblite = _getExpectedDefaults()
@@ -336,6 +343,29 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
-# TODO: test that extra fields in [] message are okay
-# TODO: test that having `None` for a required field raises PbDecodeError
+	def test_messageExtraIndexOkay(self):
+		"""
+		If a serialized message has more indices than it should have,
+		L{PbLiteSerializer.deserialize} ignores it.
+		"""
+		pblite = _getExpectedDefaults()
+		pblite.append(u'extra-field')
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.serializer.deserialize(messageDecoded, pblite)
+
+
+	def test_requiredFieldIsNone(self):
+		"""
+		If a serialized message has a C{None} for a required field,
+		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
+		"""
+		pblite = _getExpectedDefaults()
+		pblite[50] = None
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertRaises(
+			pbliteserializer.PbDecodeError,
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
+
 # TODO: test that bad enum value raises PbDecodeError (this one may be a lot of work)

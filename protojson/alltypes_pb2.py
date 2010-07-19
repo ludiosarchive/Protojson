@@ -10,7 +10,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='alltypes.proto',
   package='',
-  serialized_pb='\n\x0e\x61lltypes.proto\"\xda\t\n\x0cTestAllTypes\x12\x16\n\x0eoptional_int32\x18\x01 \x01(\x05\x12\x19\n\x0eoptional_int64\x18\x02 \x01(\x03:\x01\x31\x12\x17\n\x0foptional_uint32\x18\x03 \x01(\r\x12\x17\n\x0foptional_uint64\x18\x04 \x01(\x04\x12\x17\n\x0foptional_sint32\x18\x05 \x01(\x11\x12\x17\n\x0foptional_sint64\x18\x06 \x01(\x12\x12\x18\n\x10optional_fixed32\x18\x07 \x01(\x07\x12\x18\n\x10optional_fixed64\x18\x08 \x01(\x06\x12\x19\n\x11optional_sfixed32\x18\t \x01(\x0f\x12\x19\n\x11optional_sfixed64\x18\n \x01(\x10\x12\x1b\n\x0eoptional_float\x18\x0b \x01(\x02:\x03\x31.5\x12\x17\n\x0foptional_double\x18\x0c \x01(\x01\x12\x15\n\roptional_bool\x18\r \x01(\x08\x12\x17\n\x0foptional_string\x18\x0e \x01(\t\x12\x1b\n\x0eoptional_bytes\x18\x0f \x01(\x0c:\x03moo\x12\x32\n\roptionalgroup\x18\x10 \x01(\n2\x1b.TestAllTypes.OptionalGroup\x12<\n\x17optional_nested_message\x18\x12 \x01(\x0b\x32\x1b.TestAllTypes.NestedMessage\x12\x36\n\x14optional_nested_enum\x18\x15 \x01(\x0e\x32\x18.TestAllTypes.NestedEnum\x12\x16\n\x0erepeated_int32\x18\x1f \x03(\x05\x12\x16\n\x0erepeated_int64\x18  \x03(\x03\x12\x17\n\x0frepeated_uint32\x18! \x03(\r\x12\x17\n\x0frepeated_uint64\x18\" \x03(\x04\x12\x17\n\x0frepeated_sint32\x18# \x03(\x11\x12\x17\n\x0frepeated_sint64\x18$ \x03(\x12\x12\x18\n\x10repeated_fixed32\x18% \x03(\x07\x12\x18\n\x10repeated_fixed64\x18& \x03(\x06\x12\x19\n\x11repeated_sfixed32\x18\' \x03(\x0f\x12\x19\n\x11repeated_sfixed64\x18( \x03(\x10\x12\x16\n\x0erepeated_float\x18) \x03(\x02\x12\x17\n\x0frepeated_double\x18* \x03(\x01\x12\x15\n\rrepeated_bool\x18+ \x03(\x08\x12\x17\n\x0frepeated_string\x18, \x03(\t\x12\x16\n\x0erepeated_bytes\x18- \x03(\x0c\x12\x32\n\rrepeatedgroup\x18. \x03(\n2\x1b.TestAllTypes.RepeatedGroup\x12<\n\x17repeated_nested_message\x18\x30 \x03(\x0b\x32\x1b.TestAllTypes.NestedMessage\x12\x36\n\x14repeated_nested_enum\x18\x31 \x03(\x0e\x32\x18.TestAllTypes.NestedEnum\x1a\x1a\n\rNestedMessage\x12\t\n\x01\x62\x18\x01 \x01(\x05\x1a\x1a\n\rOptionalGroup\x12\t\n\x01\x61\x18\x11 \x01(\x05\x1a\x1a\n\rRepeatedGroup\x12\t\n\x01\x61\x18/ \x03(\x05\"\'\n\nNestedEnum\x12\x07\n\x03\x46OO\x10\x01\x12\x07\n\x03\x42\x41R\x10\x02\x12\x07\n\x03\x42\x41Z\x10\x03')
+  serialized_pb='\n\x0e\x61lltypes.proto\"\xf5\t\n\x0cTestAllTypes\x12\x16\n\x0eoptional_int32\x18\x01 \x01(\x05\x12\x19\n\x0eoptional_int64\x18\x02 \x01(\x03:\x01\x31\x12\x17\n\x0foptional_uint32\x18\x03 \x01(\r\x12\x17\n\x0foptional_uint64\x18\x04 \x01(\x04\x12\x17\n\x0foptional_sint32\x18\x05 \x01(\x11\x12\x17\n\x0foptional_sint64\x18\x06 \x01(\x12\x12\x18\n\x10optional_fixed32\x18\x07 \x01(\x07\x12\x18\n\x10optional_fixed64\x18\x08 \x01(\x06\x12\x19\n\x11optional_sfixed32\x18\t \x01(\x0f\x12\x19\n\x11optional_sfixed64\x18\n \x01(\x10\x12\x1b\n\x0eoptional_float\x18\x0b \x01(\x02:\x03\x31.5\x12\x17\n\x0foptional_double\x18\x0c \x01(\x01\x12\x15\n\roptional_bool\x18\r \x01(\x08\x12\x17\n\x0foptional_string\x18\x0e \x01(\t\x12\x1b\n\x0eoptional_bytes\x18\x0f \x01(\x0c:\x03moo\x12\x32\n\roptionalgroup\x18\x10 \x01(\n2\x1b.TestAllTypes.OptionalGroup\x12<\n\x17optional_nested_message\x18\x12 \x01(\x0b\x32\x1b.TestAllTypes.NestedMessage\x12\x36\n\x14optional_nested_enum\x18\x15 \x01(\x0e\x32\x18.TestAllTypes.NestedEnum\x12\x16\n\x0erepeated_int32\x18\x1f \x03(\x05\x12\x16\n\x0erepeated_int64\x18  \x03(\x03\x12\x17\n\x0frepeated_uint32\x18! \x03(\r\x12\x17\n\x0frepeated_uint64\x18\" \x03(\x04\x12\x17\n\x0frepeated_sint32\x18# \x03(\x11\x12\x17\n\x0frepeated_sint64\x18$ \x03(\x12\x12\x18\n\x10repeated_fixed32\x18% \x03(\x07\x12\x18\n\x10repeated_fixed64\x18& \x03(\x06\x12\x19\n\x11repeated_sfixed32\x18\' \x03(\x0f\x12\x19\n\x11repeated_sfixed64\x18( \x03(\x10\x12\x16\n\x0erepeated_float\x18) \x03(\x02\x12\x17\n\x0frepeated_double\x18* \x03(\x01\x12\x15\n\rrepeated_bool\x18+ \x03(\x08\x12\x17\n\x0frepeated_string\x18, \x03(\t\x12\x16\n\x0erepeated_bytes\x18- \x03(\x0c\x12\x32\n\rrepeatedgroup\x18. \x03(\n2\x1b.TestAllTypes.RepeatedGroup\x12<\n\x17repeated_nested_message\x18\x30 \x03(\x0b\x32\x1b.TestAllTypes.NestedMessage\x12\x36\n\x14repeated_nested_enum\x18\x31 \x03(\x0e\x32\x18.TestAllTypes.NestedEnum\x12\x19\n\x0erequired_int32\x18\x32 \x02(\x05:\x01\x31\x1a\x1a\n\rNestedMessage\x12\t\n\x01\x62\x18\x01 \x01(\x05\x1a\x1a\n\rOptionalGroup\x12\t\n\x01\x61\x18\x11 \x01(\x05\x1a\x1a\n\rRepeatedGroup\x12\t\n\x01\x61\x18/ \x03(\x05\"\'\n\nNestedEnum\x12\x07\n\x03\x46OO\x10\x01\x12\x07\n\x03\x42\x41R\x10\x02\x12\x07\n\x03\x42\x41Z\x10\x03')
 
 
 
@@ -35,8 +35,8 @@ _TESTALLTYPES_NESTEDENUM = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1222,
-  serialized_end=1261,
+  serialized_start=1249,
+  serialized_end=1288,
 )
 
 
@@ -63,8 +63,8 @@ _TESTALLTYPES_NESTEDMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1138,
-  serialized_end=1164,
+  serialized_start=1165,
+  serialized_end=1191,
 )
 
 _TESTALLTYPES_OPTIONALGROUP = descriptor.Descriptor(
@@ -90,8 +90,8 @@ _TESTALLTYPES_OPTIONALGROUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1166,
-  serialized_end=1192,
+  serialized_start=1193,
+  serialized_end=1219,
 )
 
 _TESTALLTYPES_REPEATEDGROUP = descriptor.Descriptor(
@@ -117,8 +117,8 @@ _TESTALLTYPES_REPEATEDGROUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1194,
-  serialized_end=1220,
+  serialized_start=1221,
+  serialized_end=1247,
 )
 
 _TESTALLTYPES = descriptor.Descriptor(
@@ -380,6 +380,13 @@ _TESTALLTYPES = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='required_int32', full_name='TestAllTypes.required_int32', index=36,
+      number=50, type=5, cpp_type=1, label=2,
+      has_default_value=True, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -391,7 +398,7 @@ _TESTALLTYPES = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=19,
-  serialized_end=1261,
+  serialized_end=1288,
 )
 
 
