@@ -192,7 +192,7 @@ class PbLiteSerializer(object):
 		If any part of C{data} is invalid, raises L{PbDecodeError}.
 
 		Note that the deserializer is forgiving when it comes to bool fields -
-		it will accept 1, 1.0, True, 0, -0, 0.0, -0.0, and False.
+		it will accept 1, 1.0, True, 0, 0.0, -0.0, and False.
 		"""
 		message.Clear()
 		self._deserializeMessage(message, data)
