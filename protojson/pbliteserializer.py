@@ -168,6 +168,8 @@ class PbLiteSerializer(object):
 					data = _convertToBool(data)
 				elif isEnum:
 					_ensureValidEnum(field, data)
+				# Because setattr(..., ..., None) for optional fields is
+				# okay, we don't need our own branching here.
 				try:
 					setattr(message, field.name, data)
 				except (TypeError, ValueError), e:
@@ -216,7 +218,3 @@ class PbLiteSerializer(object):
 		self._deserializeMessage(message, data)
 		# We know it's initialized (has every field) because we iterated
 		# over the fields, not the serialized data.
-
-
-
-# TODO: skip over `None`s in serialized data when setting attributes

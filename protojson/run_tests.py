@@ -22,7 +22,7 @@ import unittest
 def getSuite():
 	suite = unittest.TestLoader().loadTestsFromNames([
 		'protojson.test_pbliteserializer.PbLiteSerializeTests',
-		'protojson.test_pbliteserializer.PbLiteDeserializeWrongObjectTests',
+		'protojson.test_pbliteserializer.PbLiteDeserializeTests',
 	])
 	return suite
 

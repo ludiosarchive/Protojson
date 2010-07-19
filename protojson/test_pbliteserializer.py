@@ -223,10 +223,8 @@ class PbLiteSerializeTests(TestCase):
 
 
 
-class PbLiteDeserializeWrongObjectTests(TestCase):
-	"""
-	Test what happens if the serialized message is corrupt or unusual.
-	"""
+class PbLiteDeserializeTests(TestCase):
+
 	def setUp(self):
 		self.serializer = pbliteserializer.PbLiteSerializer()
 
@@ -394,3 +392,31 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
 			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
+	def test_optionalFieldWithDefaultIsNone(self):
+		"""
+		If a serialized message has a C{None} for a optional field with
+		a default, L{PbLiteSerializer.deserialize} ignores the None and
+		uses the default value.
+		"""
+		pblite = _getExpectedDefaults()
+		# Set the optional_int64
+		pblite[2] = None
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertFalse(messageDecoded.HasField("optional_int64"))
+		self.assertEqual(1, messageDecoded.optional_int64)
+
+
+	def test_optionalFieldWithoutDefaultIsNone(self):
+		"""
+		If a serialized message has a C{None} for a optional field without
+		a default, L{PbLiteSerializer.deserialize} ignores the None and
+		the decoded Message is missing the field.
+		"""
+		pblite = _getExpectedDefaults()
+		# Set the optional_int32
+		pblite[1] = None
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertFalse(messageDecoded.HasField("optional_int32"))
+		self.assertEqual(0, messageDecoded.optional_int32)
