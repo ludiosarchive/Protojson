@@ -43,6 +43,7 @@ from google.protobuf.descriptor import FieldDescriptor
 TYPE_BOOL = FieldDescriptor.TYPE_BOOL
 TYPE_MESSAGE = FieldDescriptor.TYPE_MESSAGE
 TYPE_GROUP = FieldDescriptor.TYPE_GROUP
+TYPE_ENUM = FieldDescriptor.TYPE_ENUM
 LABEL_REPEATED = FieldDescriptor.LABEL_REPEATED
 
 
@@ -59,6 +60,17 @@ def _convertToBool(obj):
 		raise PbDecodeError("Expected a value == "
 			"to 0 or 1, but found a %r" % (type(obj),))
 	return (obj == 1)
+
+
+def _ensureValidEnum(field, obj):
+	# Protocol Buffers' Python module (as of 2010-07-18) allows setting
+	# an enum field to an invalid value.  This can lead to all sorts of
+	# terrible bugs.  Here we dig into the field and check if the value is
+	# allowed.  I filed a bug to get this fixed in protobuf:
+	# https://code.google.com/p/protobuf/issues/detail?id=206
+	if obj not in field.enum_type.values_by_number:
+		raise PbDecodeError("Expected a valid value for "
+			"%r, but didn't get one." % (field,))
 
 
 def _getIterator(obj):
@@ -134,12 +146,15 @@ class PbLiteSerializer(object):
 			L{unicode}, or L{NoneType}.
 		"""
 		isBool = (field.type == TYPE_BOOL)
+		isEnum = (field.type == TYPE_ENUM)
 		if _isRepeated(field):
 			messageField = getattr(message, field.name)
 			if not _isMessageOrGroup(field):
 				for value in _getIterator(data):
 					if isBool:
 						value = _convertToBool(value)
+					elif isEnum:
+						_ensureValidEnum(field, value)
 					try:
 						messageField.append(value)
 					except (TypeError, ValueError), e:
@@ -151,6 +166,8 @@ class PbLiteSerializer(object):
 			if not _isMessageOrGroup(field):
 				if isBool:
 					data = _convertToBool(data)
+				elif isEnum:
+					_ensureValidEnum(field, data)
 				try:
 					setattr(message, field.name, data)
 				except (TypeError, ValueError), e:
@@ -199,3 +216,7 @@ class PbLiteSerializer(object):
 		self._deserializeMessage(message, data)
 		# We know it's initialized (has every field) because we iterated
 		# over the fields, not the serialized data.
+
+
+
+# TODO: skip over `None`s in serialized data when setting attributes

@@ -330,6 +330,34 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 			lambda: self.serializer.deserialize(messageDecoded, pblite))
 
 
+	def test_badEnumValue(self):
+		"""
+		If a serialized message has an invalid enum value,
+		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
+		"""
+		pblite = _getExpectedDefaults()
+		# Set the optional_nested_enum
+		pblite[21] = 99 # not a valid enum value
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertRaises(
+			pbliteserializer.PbDecodeError,
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
+	def test_badRepeatedEnumValue(self):
+		"""
+		If a serialized message has an invalid repeated enum value,
+		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
+		"""
+		pblite = _getExpectedDefaults()
+		# Set the repeated_nested_enum
+		pblite[49] = [1, 2, 99, 3] # 99 is not a valid enum value; the others are
+		messageDecoded = alltypes_pb2.TestAllTypes()
+		self.assertRaises(
+			pbliteserializer.PbDecodeError,
+			lambda: self.serializer.deserialize(messageDecoded, pblite))
+
+
 	def test_messageMissingAnIndex(self):
 		"""
 		If a serialized message is missing an index which it should have,
@@ -360,12 +388,9 @@ class PbLiteDeserializeWrongObjectTests(TestCase):
 		L{PbLiteSerializer.deserialize} raises L{PbDecodeError}.
 		"""
 		pblite = _getExpectedDefaults()
+		# Set the required_int32
 		pblite[50] = None
 		messageDecoded = alltypes_pb2.TestAllTypes()
 		self.assertRaises(
 			pbliteserializer.PbDecodeError,
 			lambda: self.serializer.deserialize(messageDecoded, pblite))
-
-
-
-# TODO: test that bad enum value raises PbDecodeError (this one may be a lot of work)
