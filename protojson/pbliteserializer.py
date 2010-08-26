@@ -114,18 +114,22 @@ class PbLiteSerializer(object):
 
 		Returns a C{list}, the serialized form of C{message}.
 		"""
-		maxFieldNumber = max(message.DESCRIPTOR.fields_by_number.keys())
-		serialized = [self.fillerValue] * (maxFieldNumber + 1)
+		keys = message.DESCRIPTOR.fields_by_number.keys()
+		if not keys:
+			serialized = []
+		else:
+			maxFieldNumber = max(keys)
+			serialized = [self.fillerValue] * (maxFieldNumber + 1)
 
-		for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
-			value = getattr(message, field.name)
-			if field.label == LABEL_REPEATED:
-				serializedChild = []
-				for child in getattr(message, field.name):
-					serializedChild.append(self._getSerializedValue(field, child))
-				serialized[tag] = serializedChild
-			else:
-				serialized[tag] = self._getSerializedValue(field, value)
+			for tag, field in message.DESCRIPTOR.fields_by_number.iteritems():
+				value = getattr(message, field.name)
+				if field.label == LABEL_REPEATED:
+					serializedChild = []
+					for child in getattr(message, field.name):
+						serializedChild.append(self._getSerializedValue(field, child))
+					serialized[tag] = serializedChild
+				else:
+					serialized[tag] = self._getSerializedValue(field, value)
 
 		return serialized
 
