@@ -14,7 +14,8 @@ See also protojson.pbliteserializer's docstring.
 Requirements
 ==========
 
--	Python 2.4+ (tested only with 2.6.5 and 2.7.0, though).
+-	Python 2.4+ (but tested only on CPython 2.6.5, CPython 2.7,
+	pypy 1.3, pypy 1.4).
 
 -	Google's protobuf Python module:
 	https://code.google.com/p/protobuf/
