@@ -76,4 +76,4 @@ except:
 -	In docstrings, use epytext, but don't use @param, @type, etc.
 	Few people know how to maintain those annotations.
 
-If you add tests, make sure to update run_tests.py!
+If you add tests, make sure to update protojson/run_tests.py!
