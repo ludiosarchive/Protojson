@@ -73,7 +73,6 @@ except:
 -	Use hard tabs for indentation.
 -	Use hard tabs only at the beginning of a line.
 -	Prefer to have lines <= 80 characters, but always less than 100.
--	In docstrings, use epytext, but don't use @param, @type, etc.
-	Few people know how to maintain those annotations.
+-	In docstrings, use epytext.
 
 If you add tests, make sure to update protojson/run_tests.py!
