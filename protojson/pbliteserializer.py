@@ -36,9 +36,14 @@ populated messages with tag numbers that are not continuous (and/or are very
 large) will have many (empty) spots and thus, are inefficient.
 """
 
+import sys
+
 from protojson.error import PbDecodeError
 
 from google.protobuf.descriptor import FieldDescriptor
+
+_postImportVars = vars().keys()
+
 
 TYPE_BOOL = FieldDescriptor.TYPE_BOOL
 TYPE_MESSAGE = FieldDescriptor.TYPE_MESSAGE
@@ -216,3 +221,13 @@ class PbLiteSerializer(object):
 		self._deserializeMessage(message, data)
 		# We know it's initialized (has every field) because we iterated
 		# over the fields, not the serialized data.
+
+
+
+try:
+	from mypy import constant_binder
+except ImportError:
+	pass
+else:
+	constant_binder.bindRecursive(sys.modules[__name__], _postImportVars)
+	del constant_binder
