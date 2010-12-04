@@ -225,9 +225,9 @@ class PbLiteSerializer(object):
 
 
 try:
-	from mypy import constant_binder
+	from mypy import refbinder
 except ImportError:
 	pass
 else:
-	constant_binder.bindRecursive(sys.modules[__name__], _postImportVars)
-	del constant_binder
+	refbinder.bindRecursive(sys.modules[__name__], _postImportVars)
+	del refbinder
