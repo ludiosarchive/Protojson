@@ -43,11 +43,13 @@ PbLite lists over the wire.
 Note: if you want to send protobuf `bytes` to a client where bytes are
 not UTF-8, you may need to change the encoding= passed to simplejson.dumps:
 
+```
 >>> simplejson.dumps(["\xff"])
 [...] UnicodeDecodeError: 'utf8' codec can't decode byte 0xff in position 0: invalid start byte
 
 >>> simplejson.dumps(["\xff"], encoding='latin-1')
 '["\\u00ff"]'
+```
 
 
 Likely bugs
