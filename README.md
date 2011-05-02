@@ -1,5 +1,5 @@
-Description
-===========
+Protojson overview
+==================
 
 Protojson contains `pbliteserializer`, a Protocol Buffers 2
 encoder/decoder compatible with Closure Library's
