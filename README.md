@@ -121,6 +121,5 @@ This package mostly follows the Divmod Coding Standard
 *	Use hard tabs only at the beginning of a line.
 
 *	Prefer to have lines <= 80 characters, but always less than 100.
-*	In docstrings, use epytext.
 
 If you add tests, make sure to update `protojson/run_tests.py`!
