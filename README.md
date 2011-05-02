@@ -33,6 +33,7 @@ Sample use
 ==========
 
 **Deserialization:**
+
 ```
 import simplejson
 from protojson.pbliteserializer import PbLiteSerializer
@@ -55,6 +56,7 @@ def decode_json_from_client(jsonStr):
 ```
 
 **Serialization:**
+
 ```
 import simplejson
 from protojson.pbliteserializer import PbLiteSerializer
