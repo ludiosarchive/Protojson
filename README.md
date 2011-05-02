@@ -22,7 +22,52 @@ Requirements
 	(see python/ in their source tree)
 
 
-Q&A
+Installation
+============
+`python setup.py install`
+
+This installs the module `protojson`.
+
+
+Sample use
+==========
+
+**Deserialization:**
+```
+import simplejson
+from protojson.pbliteserializer import PbLiteSerializer
+from protojson.error import PbDecodeError
+
+serializer = PbLiteSerializer()
+
+def decode_json_from_client(jsonStr):
+	"""Returns a populated protobuf Message"""
+
+	body = simplejson.loads(jsonStr)
+	try:
+		msg = SomeProtobufMessage()
+		serializer.deserialize(msg, body)
+		# msg is now populated with fields from body.
+	except PbDecodeError:
+		log.err()
+		raise
+	return msg
+```
+
+**Serialization:**
+```
+import simplejson
+from protojson.pbliteserializer import PbLiteSerializer
+from protojson.error import PbDecodeError
+
+serializer = PbLiteSerializer()
+
+simplejson.dumps(serializer.serialize(
+	SomeProtobufMessage(field1=val1, field2=val2)
+```
+
+
+FAQ
 ===
 
 **Why does this special serialization format exist in the first place?**
