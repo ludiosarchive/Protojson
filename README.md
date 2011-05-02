@@ -1,32 +1,31 @@
 Description
-========
+===========
 
-Protojson contains pbliteserializer, a Protocol Buffers 2
+Protojson contains `pbliteserializer`, a Protocol Buffers 2
 encoder/decoder compatible with Closure Library's
-goog.proto2.PbLiteSerializer.
+`goog.proto2.PbLiteSerializer`.
 
 In the future, this package might contain an encoder/decoder
-compatible with Closure Library's goog.proto2.ObjectSerializer.
+compatible with Closure Library's `goog.proto2.ObjectSerializer`.
 
-See also protojson.pbliteserializer's docstring.
+See also `protojson.pbliteserializer`'s docstring.
 
 
 Requirements
-==========
+============
 
--	Python 2.4+ (but tested only on CPython 2.6.5, CPython 2.7,
+*	Python 2.4+ (but tested only on CPython 2.6.5, CPython 2.7,
 	pypy 1.3, pypy 1.4).
 
--	Google's protobuf Python module:
+*	Google's protobuf Python module:
 	https://code.google.com/p/protobuf/
 	(see python/ in their source tree)
-
 
 
 Q&A
 ===
 
-Why does this special serialization format exist in the first place?
+**Why does this special serialization format exist in the first place?**
 
 Normally, protobuf Messages are encoded (and decoded from)
 bytes, but JavaScript environments have an easier time handling
@@ -34,7 +33,7 @@ Arrays of objects.  The PbLite format encodes Messages to Arrays
 (or `list`s in Python).
 
 
-Why is this called "Protojson"? I don't see any JSON.
+**Why is this called "Protojson"? I don't see any JSON.**
 
 You're right, pbliteserializer doesn't do any actual JSON encoding/decoding.
 This matches the behavior of the JavaScript version.  You'll need
@@ -51,28 +50,28 @@ not UTF-8, you may need to change the encoding= passed to simplejson.dumps:
 '["\\u00ff"]'
 
 
-
 Likely bugs
-========
+===========
 
-Not everything in pbliteserializer is tested.  You might discover problems
+Not everything in `pbliteserializer` is tested.  You might discover problems
 with:
 
--	Protocol Buffers Extensions (completely untested).
+*	Protocol Buffers Extensions (completely untested).
 
--	Groups and Messages nested in untested ways.
-
+*	Groups and Messages nested in untested ways.
 
 
 Code style notes
-============
+================
 
-This package mostly follows the Divmod Coding Standard:
-	http://divmod.org/trac/wiki/CodingStandard
-except:
--	Use hard tabs for indentation.
--	Use hard tabs only at the beginning of a line.
--	Prefer to have lines <= 80 characters, but always less than 100.
--	In docstrings, use epytext.
+This package mostly follows the Divmod Coding Standard
+<http://replay.web.archive.org/http://divmod.org/trac/wiki/CodingStandard> with a few exceptions:
 
-If you add tests, make sure to update protojson/run_tests.py!
+*	Use hard tabs for indentation.
+
+*	Use hard tabs only at the beginning of a line.
+
+*	Prefer to have lines <= 80 characters, but always less than 100.
+*	In docstrings, use epytext.
+
+If you add tests, make sure to update `protojson/run_tests.py`!
