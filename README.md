@@ -113,8 +113,6 @@ with:
 Contributing
 ============
 
-Patches and pull requests are welcome.
-
-This coding standard applies: http://ludios.org/coding-standard/
+Sorry, this project is no longer maintained.  [proto3-json](https://github.com/Julian/proto3-json) might work by the time you read this.
 
 If you add tests, make sure to update `protojson/run_tests.py`!

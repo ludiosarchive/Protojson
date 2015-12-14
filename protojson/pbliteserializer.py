@@ -50,7 +50,7 @@ def _ensureValidEnum(field, obj):
 	# an enum field to an invalid value.  This can lead to all sorts of
 	# terrible bugs.  Here we dig into the field and check if the value is
 	# allowed.  I filed a bug to get this fixed in protobuf:
-	# https://code.google.com/p/protobuf/issues/detail?id=206
+	# http://web.archive.org/web/20130727145204/http://code.google.com/p/protobuf/issues/detail?id=206
 	if obj not in field.enum_type.values_by_number:
 		raise PbDecodeError("Expected a valid value for "
 			"%r, but didn't get one." % (field,))
