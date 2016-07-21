@@ -205,9 +205,3 @@ class PbLiteSerializer(object):
 		self._deserializeMessage(message, data)
 		# We know it's initialized (has every field) because we iterated
 		# over the fields, not the serialized data.
-
-
-
-try: from refbinder.api import bindRecursive
-except ImportError: pass
-else: bindRecursive(sys.modules[__name__], _postImportVars)
