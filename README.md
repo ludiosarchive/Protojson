@@ -24,7 +24,11 @@ Requirements
 
 Installation
 ============
-`python setup.py install`
+```
+git clone https://github.com/ludios/Protojson
+cd Protojson
+pip install --user .
+```
 
 This installs the module `protojson`.
 
@@ -34,7 +38,7 @@ Sample use
 
 **Deserialization:**
 
-```
+```py
 import simplejson
 from protojson.pbliteserializer import PbLiteSerializer
 from protojson.error import PbDecodeError
@@ -57,7 +61,7 @@ def decode_json_from_client(jsonStr):
 
 **Serialization:**
 
-```
+```py
 import simplejson
 from protojson.pbliteserializer import PbLiteSerializer
 from protojson.error import PbDecodeError
@@ -113,6 +117,6 @@ with:
 Contributing
 ============
 
-Sorry, this project is no longer maintained.  [proto3-json](https://github.com/Julian/proto3-json) might work by the time you read this.
+Sorry, this project is no longer maintained.  Please let me know if you'd like to take over.
 
 If you add tests, make sure to update `protojson/run_tests.py`!
