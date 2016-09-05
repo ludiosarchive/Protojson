@@ -1,5 +1,5 @@
-Protojson overview
-==================
+Protojson
+=========
 
 Protojson contains `pbliteserializer`, a Protocol Buffers 2
 encoder/decoder compatible with Closure Library's
@@ -11,8 +11,7 @@ compatible with Closure Library's `goog.proto2.ObjectSerializer`.
 See also `protojson.pbliteserializer`'s docstring.
 
 
-Requirements
-============
+## Requirements
 
 *	Python 2.4+ (but tested only on CPython 2.6.5, CPython 2.7,
 	pypy 1.3, pypy 1.4).
@@ -22,8 +21,8 @@ Requirements
 	(see python/ in their source tree)
 
 
-Installation
-============
+## Installation
+
 ```
 git clone https://github.com/ludios/Protojson
 cd Protojson
@@ -33,8 +32,7 @@ pip install --user .
 This installs the module `protojson`.
 
 
-Sample use
-==========
+## Sample use
 
 **Deserialization:**
 
@@ -73,8 +71,7 @@ simplejson.dumps(serializer.serialize(
 ```
 
 
-FAQ
-===
+## FAQ
 
 **Why does this special serialization format exist in the first place?**
 
@@ -103,8 +100,7 @@ not UTF-8, you may need to change the encoding= passed to simplejson.dumps:
 ```
 
 
-Likely bugs
-===========
+## Likely bugs
 
 Not everything in `pbliteserializer` is tested.  You might discover problems
 with:
@@ -114,9 +110,8 @@ with:
 *	Groups and Messages nested in untested ways.
 
 
-Contributing
-============
+## Contributing
 
-Sorry, this project is no longer maintained.  Please let me know if you'd like to take over.
+This project is no longer maintained.  Please let me know if you'd like to take over.
 
 If you add tests, make sure to update `protojson/run_tests.py`!
